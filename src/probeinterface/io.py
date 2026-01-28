@@ -554,7 +554,8 @@ def read_maxwell(file: str | Path, well_name: str = "well000", rec_name: str = "
 
     chans = np.array(prb["channel_groups"][1]["channels"], dtype="int64")
     positions = np.array([prb["channel_groups"][1]["geometry"][c] for c in chans], dtype="float64")
-    
+
+    #120 rows x 220 columns with 17.5um pitch -> 3832.5um x 2082.5um for electrode centers
     e_w = 11.5 #MaxOne+, updated from 8.75, and 5.45 prior to 20160704
     e_h = 11.5 #MaxOne+, updated from 12.5, and 9.3 prior to 20160704
     probe.set_contacts(positions=positions, shapes="rect", shape_params={"width": e_w, "height": e_h})
