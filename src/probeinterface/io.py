@@ -554,24 +554,19 @@ def read_maxwell(file: str | Path, well_name: str = "well000", rec_name: str = "
 
     chans = np.array(prb["channel_groups"][1]["channels"], dtype="int64")
     positions = np.array([prb["channel_groups"][1]["geometry"][c] for c in chans], dtype="float64")
-
-    if version <= 20160704:
-        probe.set_contacts(positions=positions, shapes="rect", shape_params={"width": 5.45, "height": 9.3})
-        probe.annotate_contacts(electrode=electrodes)
-        probe.set_planar_contour(([-12.5, -12.5], [3845, -12.5], [3845, 2095], [-12.5, 2095]))
-    else:
-        e_w = 8.75
-        e_h = 12.5
-        probe.set_contacts(positions=positions, shapes="rect", shape_params={"width": e_w, "height": e_h})
-        probe.annotate_contacts(electrode=electrodes)
-        probe.set_planar_contour(
-            (
-                [-e_w / 2, -e_h / 2],
-                [3832.5 + e_w / 2, -e_h / 2],
-                [3832.5 + e_w / 2, 2082.5 + e_h / 2],
-                [-e_w / 2, 2082.5 + e_h / 2],
-            )
+    
+    e_w = 11.5 #MaxOne+, updated from 8.75, and 5.45 prior to 20160704
+    e_h = 11.5 #MaxOne+, updated from 12.5, and 9.3 prior to 20160704
+    probe.set_contacts(positions=positions, shapes="rect", shape_params={"width": e_w, "height": e_h})
+    probe.annotate_contacts(electrode=electrodes)
+    probe.set_planar_contour(
+        (
+            [-e_w / 2, -e_h / 2],
+            [3832.5 + e_w / 2, -e_h / 2],
+            [3832.5 + e_w / 2, 2082.5 + e_h / 2],
+            [-e_w / 2, 2082.5 + e_h / 2],
         )
+    )
 
     probe.set_device_channel_indices(np.arange(positions.shape[0]))
 
